@@ -19,6 +19,21 @@ pipeline {
             steps{                      
                 sh "./script-bash/terminate-node-server.sh"                          
             }
-        }                                                           
+        }       
+        stage('Stage: Install node_modules'){
+            steps {
+                sh "npm install"
+            }
+        }       
+        stage('Stage: Run build'){
+            steps {
+                sh "npm run build"
+            }
+        }     
+        stage('Stage: Run start'){
+            steps {
+                sh "npm start:production"
+            }
+        }                                                          
     }
 }
