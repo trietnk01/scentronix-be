@@ -1,5 +1,6 @@
 pipeline {
-    agent any	    
+    agent any	  
+    tools {nodejs "DiennkNodejs"}  
     stages {
         stage('Stage: Check node npm git version') {
             steps {
