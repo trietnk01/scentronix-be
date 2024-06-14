@@ -19,6 +19,16 @@ pipeline {
             steps{                      
                 sh "./script-bash/terminate-node-server.sh"                          
             }
+        }   
+        stage('Stage: Remove dist folder'){
+            steps {
+                sh "rm -rf dist"
+            }
+        }     
+        stage('Stage: Remove node_modules folder'){
+            steps {
+                sh "rm -rf node_modules"
+            }
         }       
         stage('Stage: Install node_modules'){
             steps {

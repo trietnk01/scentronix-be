@@ -10,5 +10,3 @@ if [ $PM2_EXIST = Yes ] ; then
     pm2 stop ScentronixServer
     pm2 delete ScentronixServer
 fi
-rm -rf dist
-rm -rf node_modules
