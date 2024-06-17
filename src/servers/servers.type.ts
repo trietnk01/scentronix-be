@@ -13,18 +13,6 @@ class IServers {
 }
 @ObjectType()
 export class ServersType {
-  @Field((type) => Boolean)
-  status: boolean;
-
-  @Field((type) => String)
-  message: string;
-
-  @Field((type) => [IServers], { nullable: true })
-  list: [IServers];
-
   @Field((type) => IServers, { nullable: true })
   item: IServers;
-
-  @Field((type) => Number, { nullable: true })
-  total: Number;
 }

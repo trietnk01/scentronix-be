@@ -1,4 +1,5 @@
 import { Injectable } from "@nestjs/common";
+import axios from "axios";
 import { InjectModel } from "@nestjs/mongoose";
 import { Request } from "express";
 import * as fs from "fs";
@@ -16,41 +17,30 @@ export class ServersService {
     let message: string = "";
     let list = null;
     let item = null;
-    try {
-      list = await this.serversModel.aggregate([
-        {
-          $sort: {
-            priority: 1
-          }
-        }
-      ]);
-      if (list && list.length > 0) {
-        item = list[0];
+    let draftData = [];
+    const serverData = await this.serversModel.find({});
+    for (var i = 0; i < serverData.length; i++) {
+      await axios({
+        method: "GET",
+        url: serverData[i].url,
+        responseType: "stream"
+      })
+        .then((res) => {
+          draftData.push(serverData[i]);
+        })
+        .catch((e) => {
+          console.log("e.message = ", e.message);
+        });
+    }
+    let minItem = draftData[0];
+    for (var j = 1; j < draftData.length; j++) {
+      if (parseInt(draftData[j].priority) < parseInt(minItem.priority)) {
+        minItem = draftData[j];
       }
-    } catch (err) {
-      status = false;
-      message = err.message;
     }
+    item = minItem;
     return {
-      status,
-      message,
       item
-    };
-  };
-  findAll = async () => {
-    let status: boolean = true;
-    let message: string = "";
-    let list = null;
-    try {
-      list = await this.serversModel.find({});
-    } catch (err) {
-      status = false;
-      message = err.message;
-    }
-    return {
-      status,
-      message,
-      list
     };
   };
 }
